@@ -19,6 +19,7 @@ type TodoCategory interface {
 }
 
 type TodoItem interface {
+	Create(item todo.TodoItem) (int, error)
 }
 
 type Repository struct {
@@ -31,5 +32,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
 		TodoCategory:  NewTodoCategoryPostgres(db),
+		TodoItem:      NewTodoItemPostgres(db),
 	}
 }

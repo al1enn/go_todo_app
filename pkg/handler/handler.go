@@ -27,13 +27,22 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		v1 := api.Group("/v1")
 		{
 			v1.GET("/ping", h.ping)
-			todos := v1.Group("/todos")
+			todo_categories := v1.Group("/todos")
 			{
-				todos.POST("/category", h.createTodoCategory)
-				todos.GET("/category", h.getAllTodoCategories)
-				todos.GET("/category/:id", h.getTodoCategoryById)
-				todos.DELETE("/category/:id", h.deleteTodoCategory)
-				todos.PUT("/category/:id", h.updateTodoCategory)
+				todo_categories.POST("/category", h.createTodoCategory)
+				todo_categories.GET("/category", h.getAllTodoCategories)
+				todo_categories.GET("/category/:id", h.getTodoCategoryById)
+				todo_categories.DELETE("/category/:id", h.deleteTodoCategory)
+				todo_categories.PUT("/category/:id", h.updateTodoCategory)
+
+			}
+			todo_items := v1.Group("/items")
+			{
+				todo_items.POST("/", h.createTodoItem)
+				// todo_items.GET("/", h.getAllTodoItems)
+				// todo_items.GET("/:id", h.getTodoItemById)
+				// todo_items.DELETE("/:id", h.deleteTodoItem)
+				// todo_items.PUT("/:id", h.updateTodoItem)
 			}
 		}
 	}
