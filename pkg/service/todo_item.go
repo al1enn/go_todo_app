@@ -16,10 +16,14 @@ func NewTodoItemService(repo repository.TodoItem) *TodoItemService {
 	}
 }
 
-func (s *TodoItemService) Create(userId int, item todo.TodoItem) (int, error) {
-	_, err := s.categoryRepo.GetById(userId, item.CategoryId)
+func (s *TodoItemService) Create(userId, categoryId int, item todo.TodoItem) (int, error) {
+	_, err := s.categoryRepo.GetById(userId, categoryId)
 	if err != nil {
 		return 0, err
 	}
-	return s.repo.Create(item)
+	return s.repo.Create(categoryId, item)
+}
+
+func (s *TodoItemService) GetAll(userId int) ([]todo.TodoItem, error) {
+	return s.repo.GetAll(userId)
 }

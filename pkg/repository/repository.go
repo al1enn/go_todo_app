@@ -19,7 +19,8 @@ type TodoCategory interface {
 }
 
 type TodoItem interface {
-	Create(item todo.TodoItem) (int, error)
+	Create(categoryId int, item todo.TodoItem) (int, error)
+	GetAll(userId int) ([]todo.TodoItem, error)
 }
 
 type Repository struct {

@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type getAllListResponse struct {
+type getAllTodoCategoriesResponse struct {
 	Data  []todo.TodoCategory `json:"data"`
 	Total int                 `json:"total"`
 }
@@ -47,7 +47,7 @@ func (h *Handler) getAllTodoCategories(ctx *gin.Context) {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
-	ctx.JSON(http.StatusOK, getAllListResponse{
+	ctx.JSON(http.StatusOK, getAllTodoCategoriesResponse{
 		Data:  todoCategories,
 		Total: len(todoCategories),
 	})

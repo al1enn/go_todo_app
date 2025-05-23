@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"net/http"
-
 	"github.com/al1enn/go_todo_app/pkg/service"
 	"github.com/gin-gonic/gin"
 )
@@ -26,20 +24,22 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		v1 := api.Group("/v1")
 		{
-			v1.GET("/ping", h.ping)
-			todo_categories := v1.Group("/todos")
+			todo := v1.Group("/todo")
+			todoCategories := todo.Group("/category")
 			{
-				todo_categories.POST("/category", h.createTodoCategory)
-				todo_categories.GET("/category", h.getAllTodoCategories)
-				todo_categories.GET("/category/:id", h.getTodoCategoryById)
-				todo_categories.DELETE("/category/:id", h.deleteTodoCategory)
-				todo_categories.PUT("/category/:id", h.updateTodoCategory)
-
+				todoCategories.POST("/", h.createTodoCategory)
+				todoCategories.GET("/", h.getAllTodoCategories)
+				todoCategories.GET("/:id", h.getTodoCategoryById)
+				todoCategories.DELETE("/:id", h.deleteTodoCategory)
+				todoCategories.PUT("/:id", h.updateTodoCategory)
+				todoItems := todoCategories.Group("/:id/item")
+				{
+					todoItems.POST("/", h.createTodoItem)
+				}
 			}
-			todo_items := v1.Group("/items")
+			todo_items := todo.Group("/item")
 			{
-				todo_items.POST("/", h.createTodoItem)
-				// todo_items.GET("/", h.getAllTodoItems)
+				todo_items.GET("/", h.getAllTodoItems)
 				// todo_items.GET("/:id", h.getTodoItemById)
 				// todo_items.DELETE("/:id", h.deleteTodoItem)
 				// todo_items.PUT("/:id", h.updateTodoItem)
@@ -48,10 +48,4 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	}
 
 	return router
-}
-
-func (h *Handler) ping(c *gin.Context) {
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "pong",
-	})
 }

@@ -20,7 +20,8 @@ type TodoCategory interface {
 }
 
 type TodoItem interface {
-	Create(userId int, item todo.TodoItem) (int, error)
+	Create(userId, categoryId int, item todo.TodoItem) (int, error)
+	GetAll(userId int) ([]todo.TodoItem, error)
 }
 
 type Service struct {

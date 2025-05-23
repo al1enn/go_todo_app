@@ -1,4 +1,4 @@
-package todo
+package models
 
 import (
 	"errors"
@@ -18,6 +18,7 @@ type TodoItem struct {
 	IsImportant bool      `json:"is_important" db:"is_important"`
 	CreatedAt   time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
+	CategoryId  int       `json:"category_id" db:"category_id" binding:"required"`
 }
 
 type UpdateTodoCategoryInput struct {

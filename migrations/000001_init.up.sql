@@ -17,12 +17,11 @@ CREATE TABLE todo_items
 (
     id          serial       not null unique,
     title       varchar(255) not null,
-    description varchar(255),
+    description varchar(255) not null,
     is_completed boolean default false,
     is_important boolean default false,
     created_date timestamp default current_timestamp,
-    updated_date timestamp default current_timestamp,
-    category_id int not null references todo_categories(id)
+    updated_date timestamp default current_timestamp
 );
 
 
