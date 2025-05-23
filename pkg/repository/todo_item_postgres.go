@@ -23,9 +23,9 @@ func (r *TodoItemPostgres) Create(categoryId int, item todo.TodoItem) (int, erro
 		return 0, err
 	}
 	var itemId int
-	createItemQuery := fmt.Sprintf("INSERT INTO %s (title, description) VALUES ($1, $2) RETURNING id",
+	createItemQuery := fmt.Sprintf("INSERT INTO %s (title, description,is_completed,is_important) VALUES ($1, $2, $3, $4) RETURNING id",
 		todoItemsTable)
-	row := tx.QueryRow(createItemQuery, item.Title, item.Description)
+	row := tx.QueryRow(createItemQuery, item.Title, item.Description, item.IsCompleted, item.IsImportant)
 	if err := row.Scan(&itemId); err != nil {
 		tx.Rollback()
 		return 0, err

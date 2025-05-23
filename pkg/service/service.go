@@ -34,6 +34,6 @@ func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
 		TodoCategory:  NewTodoCategoryService(repos.TodoCategory),
-		TodoItem:      NewTodoItemService(repos.TodoItem),
+		TodoItem:      NewTodoItemService(repos.TodoItem, repos.TodoCategory),
 	}
 }
