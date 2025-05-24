@@ -30,3 +30,17 @@ func (i UpdateTodoCategoryInput) Validate() error {
 	}
 	return nil
 }
+
+type UpdateTodoItemInput struct {
+	Title       *string `json:"title"`
+	Description *string `json:"description"`
+	IsCompleted *bool   `json:"is_completed"`
+	IsImportant *bool   `json:"is_important"`
+}
+
+func (i UpdateTodoItemInput) Validate() error {
+	if i.Title == nil && i.Description == nil && i.IsCompleted == nil && i.IsImportant == nil {
+		return errors.New("update structure has no values")
+	}
+	return nil
+}
