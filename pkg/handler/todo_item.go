@@ -72,7 +72,6 @@ func (h *Handler) getTodoItemById(ctx *gin.Context) {
 
 }
 
-
 func (h *Handler) deleteTodoItem(ctx *gin.Context) {
 	userId, err := getUserId(ctx)
 	if err != nil {
@@ -86,6 +85,31 @@ func (h *Handler) deleteTodoItem(ctx *gin.Context) {
 	}
 	err = h.services.TodoItem.Delete(userId, id)
 	if err != nil {
+		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
+	})
+}
+
+func (h *Handler) updateTodoItem(ctx *gin.Context) {
+	userId, err := getUserId(ctx)
+	if err != nil {
+		newErrorResponse(ctx, http.StatusInternalServerError, "user id not found")
+		return
+	}
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		newErrorResponse(ctx, http.StatusBadRequest, "invalid id param")
+		return
+	}
+	var input todo.UpdateTodoItemInput
+	if err := ctx.BindJSON(&input); err != nil {
+		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
+		return
+	}
+	if err := h.services.TodoItem.Update(userId, id, input); err != nil {
 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}

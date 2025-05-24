@@ -14,16 +14,17 @@ type Authorization interface {
 type TodoCategory interface {
 	Create(userId int, category todo.TodoCategory) (int, error)
 	GetAll(userId int) ([]todo.TodoCategory, error)
-	GetById(userId, id int) (todo.TodoCategory, error)
-	Delete(userId, id int) error
-	Update(userId, id int, input todo.UpdateTodoCategoryInput) error
+	GetById(userId, categoryId int) (todo.TodoCategory, error)
+	Delete(userId, categoryId int) error
+	Update(userId, categoryId int, input todo.UpdateTodoCategoryInput) error
 }
 
 type TodoItem interface {
 	Create(userId, categoryId int, item todo.TodoItem) (int, error)
 	GetAll(userId int) ([]todo.TodoItem, error)
-	GetById(userId, id int) (todo.TodoItem, error)
-	Delete(userId, id int) error
+	GetById(userId, itemId int) (todo.TodoItem, error)
+	Delete(userId, itemId int) error
+	Update(userId, itemId int, input todo.UpdateTodoItemInput) error
 }
 
 type Service struct {

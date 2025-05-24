@@ -42,7 +42,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 				todo_items.GET("", h.getAllTodoItems)
 				todo_items.GET("/:id", h.getTodoItemById)
 				todo_items.DELETE("/:id", h.deleteTodoItem)
-				// todo_items.PUT("/:id", h.updateTodoItem)
+				todo_items.PUT("/:id", h.updateTodoItem)
 			}
 		}
 	}

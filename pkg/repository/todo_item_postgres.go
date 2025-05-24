@@ -2,9 +2,11 @@ package repository
 
 import (
 	"fmt"
+	"strings"
 
 	todo "github.com/al1enn/go_todo_app"
 	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
 )
 
 type TodoItemPostgres struct {
@@ -75,5 +77,46 @@ func (r *TodoItemPostgres) Delete(userId, id int) error {
 		WHERE ti.id = tic.todo_item_id AND tic.todo_category_id = tc.id AND tc.id = utc.todo_category_id AND utc.user_id = $1 AND ti.id = $2`,
 		todoItemsTable, todoItemsCategoriesTable, todoCategoriesTable, usersTodoCategoriesTable)
 	_, err := r.db.Exec(query, userId, id)
+	return err
+}
+
+func (r *TodoItemPostgres) Update(userId, itemId int, input todo.UpdateTodoItemInput) error {
+	setValues := make([]string, 0)
+	args := make([]interface{}, 0)
+	argId := 1
+
+	if input.Title != nil {
+		setValues = append(setValues, fmt.Sprintf("title=$%d", argId))
+		args = append(args, *input.Title)
+		argId++
+	}
+	if input.Description != nil {
+		setValues = append(setValues, fmt.Sprintf("description=$%d", argId))
+		args = append(args, *input.Description)
+		argId++
+	}
+	if input.IsCompleted != nil {
+		setValues = append(setValues, fmt.Sprintf("is_completed=$%d", argId))
+		args = append(args, *input.IsCompleted)
+		argId++
+	}
+	if input.IsImportant != nil {
+		setValues = append(setValues, fmt.Sprintf("is_important=$%d", argId))
+		args = append(args, *input.IsImportant)
+		argId++
+	}
+	setQuery := strings.Join(setValues, ", ")
+	args = append(args, userId, itemId)
+
+	query := fmt.Sprintf(`UPDATE %s ti SET %s FROM %s tic, %s tc, %s utc 
+	                    WHERE ti.id = tic.todo_item_id AND tic.todo_category_id = tc.id 
+						AND tc.id = utc.todo_category_id AND utc.user_id = $%d AND ti.id = $%d`,
+		todoItemsTable, setQuery, todoItemsCategoriesTable, todoCategoriesTable, usersTodoCategoriesTable, argId, argId+1)
+
+	_, err := r.db.Exec(query, args...)
+
+	logrus.Debugf("updateQuery: %s", query)
+	logrus.Debugf("args: %s", args)
+
 	return err
 }

@@ -78,7 +78,8 @@ func (r *TodoCategoryPostgres) Update(userId, todoCategoryId int, input todo.Upd
 
 	setQuery := strings.Join(setValues, ", ")
 
-	query := fmt.Sprintf("UPDATE %s tc SET %s FROM %s utc WHERE tc.id = utc.todo_category_id AND utc.todo_category_id=$%d AND utc.user_id=$%d",
+	query := fmt.Sprintf(`UPDATE %s tc SET %s FROM %s utc
+	 					WHERE tc.id = utc.todo_category_id AND utc.todo_category_id=$%d AND utc.user_id=$%d`,
 		todoCategoriesTable, setQuery, usersTodoCategoriesTable, argId, argId+1)
 	args = append(args, todoCategoryId, userId)
 
