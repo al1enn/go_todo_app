@@ -28,3 +28,11 @@ func (s *TodoItemService) Create(userId, categoryId int, item todo.TodoItem) (in
 func (s *TodoItemService) GetAll(userId int) ([]todo.TodoItem, error) {
 	return s.repo.GetAll(userId)
 }
+
+func (s *TodoItemService) GetById(userId, id int) (todo.TodoItem, error) {
+	return s.repo.GetById(userId, id)
+}
+
+func (s *TodoItemService) Delete(userId, id int) error {
+	return s.repo.Delete(userId, id)
+}

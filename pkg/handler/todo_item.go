@@ -50,24 +50,46 @@ func (h *Handler) getAllTodoItems(ctx *gin.Context) {
 	})
 }
 
-// func (h *Handler) getTodoItemById(ctx *gin.Context) {
-// 	userId, err := getUserId(ctx)
-// 	if err != nil {
-// 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
-// 		return
-// 	}
-// 	itemId, err := strconv.Atoi(ctx.Param("id"))
-// 	if err != nil {
-// 		newErrorResponse(ctx, http.StatusBadRequest, "invalid id param")
-// 		return
-// 	}
-// 	todoItem, err := h.services.TodoItem.GetById(userId, itemId)
-// 	if err != nil {
-// 		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
-// 		return
-// 	}
-// 	ctx.JSON(http.StatusOK, map[string]interface{}{
-// 		"data": todoItem,
-// 	})
+func (h *Handler) getTodoItemById(ctx *gin.Context) {
+	userId, err := getUserId(ctx)
+	if err != nil {
+		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
+		return
+	}
+	itemId, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		newErrorResponse(ctx, http.StatusBadRequest, "invalid id param")
+		return
+	}
+	todoItem, err := h.services.TodoItem.GetById(userId, itemId)
+	if err != nil {
+		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, map[string]interface{}{
+		"data": todoItem,
+	})
 
-// }
+}
+
+
+func (h *Handler) deleteTodoItem(ctx *gin.Context) {
+	userId, err := getUserId(ctx)
+	if err != nil {
+		newErrorResponse(ctx, http.StatusInternalServerError, "user id not found")
+		return
+	}
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		newErrorResponse(ctx, http.StatusBadRequest, "invalid id param")
+		return
+	}
+	err = h.services.TodoItem.Delete(userId, id)
+	if err != nil {
+		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
+	})
+}
