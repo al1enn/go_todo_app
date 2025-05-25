@@ -11,7 +11,7 @@ type TodoCategory struct {
 }
 
 type TodoItem struct {
-	Id          int       `json:"id" db:"id"`
+	Id          int       `json:"-" db:"id"`
 	Title       string    `json:"title" db:"title" binding:"required"`
 	Description string    `json:"description" db:"description" binding:"required"`
 	IsCompleted bool      `json:"is_completed" db:"is_completed"`
