@@ -1,13 +1,14 @@
 services:
-  # app:
-  #   build: ./
-  #   command: ./go_todo_app
-  #   ports:
-  #     - 8000:8000
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-
+  todo_app:
+    build: ./
+    command: ./go_todo_app
+    ports:
+      - 8000:8000
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
   db:
     image: postgres:16.4
     env_file:
@@ -25,4 +26,3 @@ services:
 
 volumes:
   pgdata:
-  redis-data:
