@@ -7,11 +7,11 @@ import (
 	"syscall"
 
 	todo "github.com/al1enn/go_todo_app"
-	"github.com/al1enn/go_todo_app/pkg/handler"
-	"github.com/al1enn/go_todo_app/pkg/repository"
+	"github.com/al1enn/go_todo_app/internal/handler"
+	"github.com/al1enn/go_todo_app/internal/repository"
 	"github.com/sirupsen/logrus"
 
-	"github.com/al1enn/go_todo_app/pkg/service"
+	"github.com/al1enn/go_todo_app/internal/service"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"github.com/spf13/viper"

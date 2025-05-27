@@ -6,7 +6,7 @@ import (
 	"time"
 
 	todo "github.com/al1enn/go_todo_app"
-	"github.com/al1enn/go_todo_app/pkg/repository"
+	"github.com/al1enn/go_todo_app/internal/repository"
 	"github.com/golang-jwt/jwt"
 )
 
